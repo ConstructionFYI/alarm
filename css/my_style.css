@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+
+}
+
+div#container {
+    width: 100%;
+    min-width: 1000px;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+}
+
+div#analog {
+    width: 80%;
+    min-width: 700px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #F1F8E9;
+}
+
+div#sidePanelRight {
+    width: 20%;
+    min-width: 250px;
+    background: #C5E1A5;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+}
+
+div#clock-face {
+    width: 100%;
+    height: 100%;
+}
+
+div#clock-face:after {
+    position: absolute;
+    content: ' ';
+    top: calc( 50% - 8px );
+    left: calc( 50% - 8px );
+    width: 16px;
+    height: 16px;
+    background: #EFFFF1;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #BBB;
+}
+
+div#clock-border {
+    border: 6px solid #EFFFF1;
+    box-shadow: 0 0 10px #BBB, inset 0 0 10px #BBB;
+    border-radius: 50%;
+    width: 500px;
+    height: 500px;
+    max-width: 700px;
+    max-height: 700px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    
+}
+
+span#clock-hour, span#clock-minute, span#clock-second {
+    display: block;
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 50% 100% 0;
+    
+}
+
+span#clock-second {
+    margin: -45% -1px 0 -1px;
+    padding: 45% 1px 0 0;
+    border-radius: 3px;
+    background: #E53935;
+    box-shadow: 0 0 4px #BBB;
+}
+
+span#clock-minute {
+    margin: -35% -2px 0 -2px;
+    padding: 35% 2px 0 0;
+    border-radius: 2px;
+    background: #EFFFF1;
+    box-shadow: 0 0 6px #BBB;
+}
+
+span#clock-hour {
+    margin: -26% -3px 0 -3px;
+    padding: 26% 3px 0 0;
+    border-radius: 3px;
+    background: #EFFFF1;
+    box-shadow: 0 0 8px #BBB;  
+}
