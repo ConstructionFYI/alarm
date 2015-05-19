@@ -1,38 +1,56 @@
+var intervals = [];
+
 // выполняется при изменении модели
-var alarmer = function(alarmlist) {
-   var checkerID,
-       alarms = [];
+Alarm.alarmer = function() {
+
+    var alarms = [],
+        now_day = new Date().getDay();
     
+    this.alarms = alarms;
+        
+    this.init = function(alarmlist) {
+        
+        // очищаем интервалы созданные прежде
+        for (var i=0;i<intervals.length;i++) {
+            clearInterval(intervals[i]);    
+        }
+        intervals = [];
+        
     // пишем в массив alarms включенные будильники
-    for (var i=0;i<alarmlist.length;i++) {
-        var this_a = alarmlist[i];
-        if (this_a.enabled) alarms.push({ 'time':this_a.time,'days':this_a.days });
+        for (var i=0;i<alarmlist.length;i++) {
+            var this_a = alarmlist[i],
+                day_ex = find(this_a.days,now_day);
+
+            if (this_a.enabled && !isNaN(day_ex)) {
+                alarms.push(new Alarm.alarm_play(this_a.time,this_a.desc));
+            }
+        }   
     }
+}
+
+// конструктор обьекта
+Alarm.alarm_play = function(time,desc) {
+
+    this.time = time.split(':');
+    this.desc = desc;
     
-    // выполняем этот код каждую секунду
-    clearInterval(checkerID);
-    checkerID = setInterval(function(){
+    this.play();
+}
+
+Alarm.alarm_play.prototype.play = function() {
+    var that = this,
+        interval,
+        preventer;
+    
+    interval = setInterval(function(){
         var now = new Date(),
-            now_day = now.getDay(),
             now_hour = now.getHours(),
             now_minute = now.getMinutes();
         
-        // для каждого будильника
-        for (var i=0;i<alarms.length;i++) {
-            
-            var alarm = alarms[i],
-                alarm_time = alarm.time.split(':'),
-                playTimeout;
-            
-            // перебираем время недели
-            for (var j=0;j<alarm.days.length;j++) {
-                // если день недели, час и минута совпадают - выполняем (внимание, код может выполниться до 60 раз за минуту)
-                if (alarm.days[j] == now_day && alarm_time[0] == now_hour && alarm_time[1] == now_minute) {
-                                        
-                }
-            }
-
-        }
-    },5000);
+            if ( that.time[0] == now_hour && that.time[1] == now_minute ) {
+                clearInterval(interval);
+                alarmPlayObserver(that.time.join(':'),that.desc);
+            }   
+    },3000);
+    intervals.push(interval);
 }
-

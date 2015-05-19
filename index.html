@@ -76,8 +76,10 @@
             });
      
             model = new Alarm.model();
+            alarmer = new Alarm.alarmer();
             view = new Alarm.view('div#alarm_container');
             viewmodel = new Alarm.viewmodel(model,view);
+            
         });
     
   
@@ -116,11 +118,7 @@
         
     </div>
 </div>
-    <div id='alarmer'>
-        <div id="close">
-        </div>
-        
-    </div>
+
 </body>
     
 </html>

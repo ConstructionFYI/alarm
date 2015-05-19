@@ -102,16 +102,11 @@
 
         this.name = args.name || 'Alarm';
         this.time = args.time || '00:00'
-        this.desc = args.desc || 'Description';
+        this.desc = args.desc || '';
         this.days = args.days || [];
         this.enabled = args.enabled || false;
         this.edited = args.edited || false;
 
-        this.itemChange = Alarm.makeObservableSubject();  
-        // я не знаю как исправить этот костыль, но вешать фунцию надо в момент создания обьекта, иначе ничего не выйдет. Поэтому тут вешаем, а саму фунцию уносим подальше в контроллер
-        this.itemChange.addObserver(function(p){
-                itemWasChanged(p);
-        });
 
         this.edit = function(index,obj) {
             if (typeof(obj) !== 'object') return;
@@ -126,7 +121,7 @@
             // Enabled or Disabled
             if (obj.enabled === true || obj.enabled === 'true') that.enabled = true;
             else if (obj.enabled === false || obj.enabled === 'false') that.enabled = false;
-
-            that.itemChange.notifyObservers(arguments);
+            // сложности с реализацией наблюдателя
+            modelEditedItemObserver(arguments);
         };
     };

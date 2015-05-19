@@ -11,7 +11,7 @@ Alarm.viewmodel = function(model,view) {
     //  Любое событие в модели
     model.modelChanged.addObserver(function(alarmlist){
         // инициализируем будильник 
-       alarmer(alarmlist);
+       alarmer.init(alarmlist);
     });
     
     // Добавление записи в модель выполняет этот код
@@ -26,10 +26,15 @@ Alarm.viewmodel = function(model,view) {
     });
     
     // Изменение конкретной записи в модели выполняет этот код
-    itemWasChanged = function(p) {
+    modelEditedItemObserver = function(p) {
         var index = p[0],
             changes = p[1];
         view.editItem(index,changes);
+    };
+    
+    // Срабатывание какого либо будильника выполняет этот код
+    alarmPlayObserver = function(time,desc){
+        view.playAlarm(time,desc);
     };
     
     

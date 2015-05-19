@@ -16,7 +16,13 @@ var template = ['<div id="alarm_item">',
                 '</div>',
                 '<div id="alarm_edit"><span>&#9013;</span></div>',
                 '</div>'
-           ].join('');
+           ].join(''),
+    alarmerTpl = [
+                    '<div id="alarmer">',
+                        '<div id="close">',
+                        '</div>',
+                    ' </div>',
+    ].join('');;
 
 Alarm.view = function(rootElement) {
     var that = this,
@@ -48,6 +54,10 @@ Alarm.view = function(rootElement) {
         var item = alarmlist[index];
         item.insertData(changes);        
     };
+    
+    this.playAlarm = function(time,desc) {
+        alert(time);
+    }
     
 }; 
 
