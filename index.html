@@ -10,11 +10,14 @@
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="bower_components/moment/moment.js"></script>
     <script type="text/javascript" src="js/timepicker.min.js"></script>
+    <script type="text/javascript" src="js/clock.js"></script>
     <script type="text/javascript" src="js/model.js"></script>
     <script type="text/javascript" src="js/view.js"></script>
     <script type="text/javascript" src="js/modelview.js"></script>    
-    <!--script src="//cdn.muicss.com/mui-0.0.8/js/mui.min.js"></script-->
+    <script type="text/javascript" src="js/alarmer.js"></script>    
+    
     <script>
+        
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -56,283 +59,22 @@
             })
         }
         
-        function supportLocalStorage() {
-            try {
-                return 'localStorage' in window && window['localStorage'] !== null;
-            } catch (e) {
-                return false;
-            }
-        }
     </script>
-    <script>
-        // CLOCK
-        function digitalTimeShow() {
-            var $digitalSecond = $('span#digital-second');
-            var $digitalMinute = $('span#digital-minute');
-            var $digitalHour = $('span#digital-hour');
     
-            var hour = new moment().format('H');
-            var minute = new moment().format('mm');
-            var second = new moment().format('ss');
-            
-            $digitalSecond.html(second);
-            $digitalMinute.html(minute);
-            $digitalHour.html(hour);
-        }
-        
-        function analogTimeShow(){
-            var hour = parseInt( new moment().format('h') );
-            var minute = parseInt( new moment().format('mm') );
-            var second = parseInt( new moment().format('ss') );
-
-            $('span#arrow-second').css('transform','rotate('+getDegreeFromTime(second,60)+'deg)');
-            $('span#arrow-minute').css('transform','rotate('+getDegreeFromTime(minute+second/60,60)+'deg)');
-            $('span#arrow-hour').css('transform','rotate('+getDegreeFromTime(hour+minute/60,12)+'deg)');
-        }
-        
-        // отправляем текущее время (12 минут например) и делитель (60 минут всего например)
-        // можно точно высчитать градус для часов и минут, для этого передаем в time значение в формате minute+second/60
-        
-        function getDegreeFromTime(time,divider){
-            return (time*(360/divider));            
-        }
-      
-        var intervalId = null;
-        function showClock(type) {
-            if (type == 'digital') {
-                $('div#analog-border').css({display:'none'});
-                clearInterval(intervalId);
-                intervalId = setInterval('digitalTimeShow()',500);
-                $('div#tumbler span').addClass('digital').val('digital');
-                $('div#digital-border').css({display:'table-cell'});
-                setCookie('clockType','digital');
-                
-            } else {
-                
-                $('div#digital-border').css({display:'none'});
-                clearInterval(intervalId);
-                intervalId = setInterval('analogTimeShow()',300);
-                $('div#tumbler span').removeClass('digital').val('analog');
-                $('div#analog-border').css({display:'table-cell'});
-                setCookie('clockType','analog');
-            }
-        }
-                
-  /*      // ALARM
-        var template = [
-            '<div id="alarm_item">',
-                '<div id="alarm_remove">x</div>',
-                '<input type="text" value="" readonly="readonly" id="alarm_time" />',
-                '<div id="alarm_tumbler"><span></span></div>',
-                '<input type="text" placeholder="description.." id="alarm_desc" />',
-                '<div id="alarm_days">',
-                    '<ul>',
-                        '<li id="1">Пн</li>',
-                        '<li id="2">Вт</li>',
-                        '<li id="3">Ср</li>',
-                        '<li id="4">Чт</li>',
-                        '<li id="5">Пт</li>',
-                       ' <li id="6">Сб</li>',
-                        '<li id="7">Вс</li>',
-                    '</ul>',
-                '</div>',
-                '<div id="alarm_edit"><span>&#9013;</span></div>',
-            '</div>'
-           ].join('');
-        
-        var randomId = function(n) {
-            return parseInt(n+Math.random()*n);
-        }
-        
-        var localStorageToObjects = function() {
-            // получаем список записей (массив имен) из localStorage
-            var alarmList = [];
-            for (var k in localStorage) {
-                if (k.match('alarm')) {
-                    alarmList.push(k);
-                }
-            }
-            // парсим содержимое localstorage и каждый элемент записываем в отдельный обьект, затем рисуем обьекты
-            for (var i in alarmList) {
-                var t = JSON.parse(localStorage.getItem(alarmList[i]));
-                window[alarmList[i]] = new Alarm(alarmList[i],t.id, t._time,t._days,t._desc,t._enable);
-                window[alarmList[i]].drawItem();
-            }
-        }
-        
-        var Alarm = function(name,id,time,days,desc,enable) {
-            this.id = id || randomId(1000);
-            this.name = name || 'alarm_'+this.id;
-            this._time = time || '06:00';
-            this._days = days || [];
-            this._desc = desc || '';
-            this._enable = enable || false;
-            this.element = $(template);
-        }
-    
-        Alarm.prototype = {
-
-            //time
-            get time ()    {   return this._time;              },
-            set time (val) {   this._time = val; this.setLocalStorage(); },
-            //days
-            get days () {      return this._days; },
-            set days (val) {   this._days = val; this.setLocalStorage(); },
-            //desc
-            get desc () {      return this._desc; },
-            set desc (val) {   this._desc = val; this.setLocalStorage(); },
-            //tumbler
-            get enable () {      return this._enable; },
-            set enable (val) {   this._enable = val; this.setLocalStorage(); }   
-        }
-        
-        Alarm.prototype.createAlarm = function() {
-            this.setLocalStorage();  
-            this.drawItem();
-        }
-        
-        // метод пишет обьект в localstorage
-        Alarm.prototype.setLocalStorage = function(){
-            var replacer = function(key, value) {
-
-              if (key=="element") {
-                  return undefined;
-              }
-              else return value;
-
-            }
-            
-            localStorage.setItem(this.name, JSON.stringify(this,replacer));
-        }
-        
-        // метод удаляет обьект из localstorage
-        Alarm.prototype.detachLocalStorage = function(){
-            
-            localStorage.removeItem(this.name);
-        }
-        
-        Alarm.prototype.drawItem = function() {
-
-            var newitem = this.element;
-            newitem.val(this.name).addClass(this.name);
-            
-            // время
-            newitem.find('#alarm_time').attr('value',this.time);
-            // переключатель
-            newitem.find('#alarm_tumbler span').toggleClass('enable',this.enable);
-            // описание
-            newitem.find('#alarm_desc').attr('value',this.desc);
-            // Дни недели
-            
-            for (var i = 0;i<this.days.length;i++) {
-                var day = parseInt(this.days[i]);
-                if (!isNaN(day)) {
-                    newitem.find('#alarm_days ul').children('#'+day).addClass('on');
-                }
-            }
-            // Если уже есть такой
-            $('#alarm_container #alarm_item').hasClass(this.name) ? $('.'+this.name).replaceWith(newitem) : $('#alarm_container').append(newitem);
-
-        }
-        */
+    <script>    
         // ONLOAD
         $(function(){    
             showClock(getCookie('clockType'));
+            
             $('div#tumbler span').on("click",function(){
                 var $this = $(this);
-                if ($this.val() == 'digital') {
+                if ($this.val() === 'digital') {
                     showClock();
-                } else if ($this.val() == 'analog') {
+                } else if ($this.val() === 'analog') {
                     showClock('digital');
-                }
-                
+                }   
             });
-           /*
-            // боковая панель
-            localStorageToObjects();
-            
-;
-            
-            // Кнопка добавить
-            $('div#alarm_add').on("click",function(){
-                var id = randomId(10000);
-                window['alarm_'+id] = new Alarm('alarm_'+id,id);
-                window['alarm_'+id].createAlarm();
-                
-            });
-            
-            // Тумблер
-            $('div#alarm_container').on("click", "div#alarm_tumbler span",function(){
-                var $this = $(this);
-                var $item = $this.parents("#alarm_item");
-                var state = $this.toggleClass('enable').prop('class') == 'enable' ? true : false;
-                window[$item.val()].enable = state;
-            });
-            
-            // Кнопка редактировать
-            $('div#alarm_container').on("click", "div#alarm_edit span", function(){
-                var $this = $(this),
-                    $item = $this.parents("#alarm_item"),
-                    $time = $item.find('#alarm_time');
-                
-                if ($item.hasClass('edited')) {
-                    //закрыть
-                    $item.toggleClass('edited');
-                    $time.timePicker('destroy');
-                }
-                else {
-                    //открыть. Перед открытием закрыть все открытые
-                   // $('#alarm_container #alarm_item').removeClass('edited');
-                    $item.toggleClass('edited');
-                    $time.timePicker({'theme':'dark','position':'left','float':'center'});
-                }
-                
-            });
-            
-            // Кнопка удалить
-            $('div#alarm_container').on("click","div#alarm_remove", function(){
-                var $this = $(this);
-                var $item = $this.parents("#alarm_item"); 
-                var item_name = $this.parents("#alarm_item").val(); 
-                //удаляем из стора, DOM-структуру, обьект
-                window[item_name].detachLocalStorage();
-                $item.detach();
-                delete window[item_name];
-                
-            });
-            
-            // Дни недели
-            $('div#alarm_container').on("click","#alarm_item.edited div#alarm_days ul li",function(){
-                var $this = $(this);
-                var this_id = $this.prop('id');
-                var $item = $this.parents("#alarm_item"); 
-                var item_name = $this.parents("#alarm_item").val(); 
-                var day_array = window[item_name].days;
-                
-                if ($this.toggleClass('on').attr('class') == 'on') {
-                    day_array.push(this_id); 
-                } else {
-                    var index = day_array.indexOf(this_id);
-                    day_array.splice(index,1);
-                }
-                window[item_name].days = day_array;
-                
-            });
-            
-            // Описание
-            var intervalID;
-            $('div#alarm_container').on("input","#alarm_desc",function(){
-                var $this = $(this);
-                var $item = $this.parents("#alarm_item"); 
-                var item_name = $this.parents("#alarm_item").val(); 
-                
-                clearInterval(intervalID);
-                intervalID = setTimeout(function(){
-                    window[item_name].desc = $this.val();
-                },1000);
-                
-            });
-    */
+     
             model = new Alarm.model();
             view = new Alarm.view('div#alarm_container');
             viewmodel = new Alarm.viewmodel(model,view);
@@ -374,15 +116,10 @@
         
     </div>
 </div>
-    <div id='hidden'>
-        <div id="alarm_item">
-            <div id="alarm_remove">x</div>
-            <input type="text" value="" readonly="readonly" id="alarm_time" />
-            <div id="alarm_tumbler"><span></span></div>
-            <input type="text" placeholder="description.." id="alarm_desc" />
-            <div id="alarm_days"><ul><li id="1">Пн</li><li id="2">Вт</li><li id="3">Ср</li><li id="4">Чт</li><li id="5">Пт</li><li id="6">Сб</li><li id="7">Вс</li></ul></div>
-            <div id="alarm_edit"><span>&#9013;</span></div>
+    <div id='alarmer'>
+        <div id="close">
         </div>
+        
     </div>
 </body>
     

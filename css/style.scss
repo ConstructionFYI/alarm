@@ -177,7 +177,6 @@ div#analog-border {
     
 }
 
-
 div#digital-border {   
     text-align: center;
     vertical-align: middle;
@@ -423,8 +422,23 @@ div#side {
     }
 }
 
-#hidden {
+div#alarmer {
+    position: absolute;
+    top: 50px;
+    bottom: 50px;
+    left: 200px;
+    right: 200px;
+    background: #f0f0f0;
+    min-height: 400px;
+    box-shadow: 0 0 10px #999;
     display: none;
+    
+    div#close {
+        width: 50px;
+        height: 50px;
+        top: 0;
+        right: 0px;
+    }
 }
 
 @-webkit-keyframes blink {
