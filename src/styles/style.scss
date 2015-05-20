@@ -1,0 +1,511 @@
+$background: #EEEEEE;
+$backgroundSide: #424242;
+$backgroundAlarmer: #00BCD4;
+
+$backgroundText: #616161;
+$backgroundSideText: #F5F5F5;
+$backgroundAlarmerText: #E0F7FA;
+
+$clock-color: #5F5F5F; //#EFFFF1 - lighty
+$main-color: #2196F3;
+$accent-color: #E91E63;
+$accent-color-inactive: #424242;
+
+
+
+$shadow-color-light: #BBB;
+$shadow-color-dark: #666;
+$shadow-color-default: $shadow-color-light;
+
+$tumblerHeight: 30px;
+
+@mixin arrow-shadow($size, $color:$shadow-color-default) {
+     box-shadow: 0 0 $size $color;   
+}
+
+@mixin absolute-pos($pos,$top:0,$right:0,$bottom:0,$left:0) {
+    position: absolute;
+    @if $pos == left {
+        top: $top;
+        bottom: $bottom;
+        left: $left;   
+    }
+    @else if $pos == right {
+        top: $top;
+        bottom: $bottom;
+        right: $right; 
+    }
+    @else if $pos == center {
+        top: $top;
+        bottom: $bottom;
+        left: $left;
+        right: $right;
+    }
+}
+
+@mixin alarm-block-pos($float,$width,$height) {
+    float:$float;
+    width: $width;
+    height: $height;
+}
+
+@import 'reset.css';
+body {
+    margin: 0;
+    font-family: "Ubuntu","Verdana","Arial",sans-serif;
+    color: $backgroundText;
+}
+
+div#container {
+    width: 100%;
+    min-width: 1000px;
+    height: 100%;
+    min-height:  650px;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right: 0;
+}
+
+div#main {
+    width: calc( 100% - 300px );
+    min-width: 650px;
+    height: 100%;
+    float: left;
+    background: $background;
+    display: table;
+    
+    div#tumbler {
+        height: $tumblerHeight;
+        display: table-row;
+        
+        p {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        span#check {
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+            background: desaturate($main-color, 70%);
+            border-radius: 25px;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+
+            &:after {
+                content: " ";
+                position: absolute;
+                left:0;
+                right: auto;
+                width: 26px;
+                height:  26px;
+                background: $main-color;
+                border-radius: 50%;
+                margin: -3px 0 0 0;
+                box-shadow: 0 0 3px $shadow-color-dark;
+                transition: all 1s ease-out 0;
+            }
+            &.digital:after {
+                right:0 !important;
+                left: auto !important;
+            }
+        }
+    }
+}
+
+div#analog-border {
+    display: none;
+    width: 100%;
+    vertical-align: middle;
+    transition: all 0.5s linear 0;
+    
+    div#clock-face {
+        border: 6px solid $clock-color;
+        box-shadow: 0 0 10px #BBB, inset 0 0 10px #BBB;
+        border-radius: 50%;
+        width: 600px;
+        height: 600px;
+        margin: 0 auto;
+        position: relative;
+        
+        &:after { //маленький кругляшок посередине
+            position: absolute;
+            content: ' ';
+            top: calc( 50% - 8px );
+            left: calc( 50% - 8px );
+            width: 16px;
+            height: 16px;
+            background: $clock-color;
+            border-radius: 50%;
+            @include arrow-shadow(8px);
+        }
+        
+        span#arrow-hour, span#arrow-minute, span#arrow-second {
+            display: block;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 50% 100% 0;
+        }
+
+        span#arrow-second {
+            margin: -45% -1px 0 -1px;
+            padding: 45% 1px 0 0;
+            border-radius: 3px;
+            background: #E53935;
+            @include arrow-shadow(4px);
+        }
+
+        span#arrow-minute {
+            margin: -35% -2px 0 -2px;
+            padding: 35% 2px 0 0;
+            border-radius: 2px;
+            background: $clock-color;
+            @include arrow-shadow(6px);
+        }
+
+        span#arrow-hour {
+            margin: -26% -3px 0 -3px;
+            padding: 26% 3px 0 0;
+            border-radius: 3px;
+            background: $clock-color;
+            @include arrow-shadow(8px); 
+        }
+
+    }    
+    
+}
+
+div#digital-border {   
+    text-align: center;
+    vertical-align: middle;
+    display: none;
+    transition: all 0.5s linear 0;
+    
+    div#clock-face {
+        
+        span {
+            min-width: 33.3333333%;
+            font-family: sans-serif;
+            font-size: 9em;
+            text-shadow: 0 0 3px $shadow-color-light;
+            color: $clock-color;
+        }
+        span#digital-hour {
+            &:after {
+                content: ":";
+                -webkit-animation: blink 1s linear infinite;
+                animation: blink 1s linear infinite;
+            }
+            
+        }
+        
+        span#digital-minute {
+                        
+        }
+        
+        span#digital-second {
+            &:before {
+                content: ":";
+                -webkit-animation: blink 1s linear infinite;
+                animation: blink 1s linear infinite;
+            }
+        }
+    }
+}
+
+div#side {
+    width: 300px;
+    height: 100%;
+    float:right;
+    background: $backgroundSide;
+    color: $backgroundSideText;
+    
+    
+    #alarm_container {
+        overflow-y: scroll;
+        height: calc( 100% - 80px );
+        
+        #alarm_item {
+            height: 90px;
+            padding-top: 10px;
+            margin: 0 10px 10px 10px ;
+            border-bottom: 1px solid lighten($backgroundSide,10%);
+            position: relative;
+            transition: height,background 0.3s ease-out 0;
+
+            #alarm_remove {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin: 3px 8px;
+                font-size: 10pt;
+                opacity: 0;
+                display: none;
+            }
+
+            #alarm_time {
+                @include alarm-block-pos(left,calc( 69% - 10px ),59%);
+                background: transparent;
+                border: none;
+                font-size: 33pt;
+                padding-left: 10px;
+                color:inherit;
+
+            }
+            #alarm_tumbler {
+                @include alarm-block-pos(right,30%,59%);
+                text-align: right;
+                span {
+                    display: inline-block;
+                    width: 40px;
+                    height: 20px;
+                    border-radius: 10px;
+                    background: lighten($accent-color-inactive,30%);
+                    margin: 15px;
+                    position: relative;
+                    cursor: pointer;
+                    
+
+                    &:after {
+                        display: block;
+                        height: 18px;
+                        width: 18px;
+                        position: absolute;
+                        left: 0;
+                        margin-top: 1px;
+                        margin-left: 2px;
+                        background: $accent-color-inactive;
+                        border-radius: 50%;
+                        content: " ";
+                        transition: all 0.2s linear 0;
+                    }
+
+                    &.enable {
+                        background: desaturate($accent-color,70%);
+                         &:after {
+                             margin-left: 20px;
+                             background: $accent-color;
+                         } 
+                    }
+
+
+                }
+            }
+
+            #alarm_desc {
+                display:none;
+                transition: all 0.3s ease-out 0;
+            }
+
+            #alarm_days {
+                @include alarm-block-pos(left,79%,40%);
+                display: table;
+                ul {
+                    font-size: 8pt;
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding-left: 5px;
+                    
+                    li {
+                        display: none;
+                        margin: 0 3px;
+                        background: lighten($backgroundSide,10%);
+                        border-radius: 50%;
+                        padding: 4px 3px;
+                        max-height: 14px;
+                        max-width: 14px;
+                        overflow: hidden;
+                        transition: all 0.5s linear 0;
+                    }
+
+                    li.on {
+                        display: inline-block;
+                    }
+                }
+            }
+
+            #alarm_edit {
+                @include alarm-block-pos(right,20%,40%);
+                display: table;
+
+                span {
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: right;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+        #alarm_item.edited {
+            height:120px;
+            background: rgba(#bbb,.1);
+
+            #alarm_remove {
+                display: block;
+                opacity: 0.8;
+                cursor:pointer;
+            }
+
+            #alarm_desc {
+                display: block;
+                width: calc( 100% - 40px );
+                margin: 0 10px;
+                padding: 0 10px;
+                height: 30px;
+                border: none;
+                border-bottom: 1px solid $accent-color;  
+                background: transparent;
+                color:inherit;
+                float:left;
+                text-overflow: ellipsis;
+                outline: 0;
+            } 
+
+            #alarm_time {
+                @include alarm-block-pos(left,calc( 69% - 10px ),calc( 59% - 30px ));
+                outline: none;
+            }
+
+            #alarm_tumbler {
+                 @include alarm-block-pos(right,30%,calc( 59% - 30px ));
+            }
+
+            #alarm_days {
+                ul {
+                    li {
+                        display: inline-block;
+                        cursor: pointer;
+                    }
+                    li.on {
+                         background: $main-color;
+                    }
+                }
+            }
+
+            #alarm_edit {
+                span {
+                    text-align: left;
+                    transform: rotate(180deg);
+                    padding: 0 10px 10px 10px;
+                }
+            }
+        }
+    }
+    
+    #alarm_add {
+        float: right;
+        margin: 10px 25px 25px 25px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: $accent-color;
+        display: table;
+        text-align: center;
+        box-shadow: 0 0 4px darken($shadow-color-dark,20%);
+        cursor: pointer;
+        
+        &:after
+         {
+            content: "+";
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 22px;
+        }
+        
+        &:hover {
+            background: lighten($accent-color, 10%);
+        }
+    }
+}
+
+div#alarmer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $backgroundAlarmer;
+    font-size: 12pt;
+    color: $backgroundAlarmerText;
+    
+    #extender {
+        height: calc( 50% - 210px );    
+    }
+    
+    #time {
+        font-size: 12em;
+        text-align: center;
+        height: 200px;
+    }
+    
+    #desc {
+        font-size: 1.5em;
+        text-align: center;
+        max-height: 80px;
+        overflow-y: hidden;
+    }
+    
+    #alarm_snooze,#alarm_done {
+        text-align: center;
+        cursor: pointer;
+        padding: 10px 0;
+        line-height: 70px;
+        vertical-align: middle;
+        
+        &:hover {
+            background: rgba(40,40,40,0.1);
+        }
+        
+    }
+     
+    #alarm_snooze {
+        font-size: 2em;
+    }
+    
+    #alarm_done {
+        margin-top: 30px;
+        font-size: 3em;
+        color: #CDDC39;
+    }
+    
+}
+
+@-webkit-keyframes blink {
+  0% { opacity: 0.8; }
+  40% { opacity: 0.8; }
+  50% { opacity: 0; }
+  60% { opacity: 0.8; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes blink {
+  0% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+
+::-webkit-scrollbar{
+    width:3px;
+}
+
+::-webkit-scrollbar-thumb{
+    border: none;
+    background: #BBB;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: #888;
+}
+
+::-webkit-scrollbar-track{
+    border-width:0;
+    background: transparent;
+}

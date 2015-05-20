@@ -1,3 +1,8 @@
-node_modules/**/
-bowe_components/**/
+# bower
+bower_components/**/
 
+# grunt
+node_modules/**/
+
+# junk files
+*.map
