@@ -36,8 +36,13 @@ Alarm.viewmodel = function(model,view) {
     };
     
     // Срабатывание какого либо будильника выполняет этот код
-    alarmPlayObserver = function(time,desc){
-        view.playAlarm(time,desc);
+    alarmPlayObserver = function(obj){
+        var time = obj.time.join(":"),
+            desc = obj.desc,
+            index = obj.index;
+        // вью рисует будильник, модели сообщаем что будильник уже играл
+        view.playAlarm(time,desc,index);
+        model.edit(index,{'played':true});
     };
     
     
@@ -60,10 +65,11 @@ Alarm.viewmodel = function(model,view) {
             edit_button = obj.alarm_edit,
             time = obj.alarm_time,
             isEdited = model.get(index).edited;
-        // закроем все при открытии (и даже закрытии) любого будильника, а так же удаляем все таймпикеры созданные ранее
+        // закроем все при щелчке на кнопку редактировать любого будильника, а так же удаляем все таймпикеры созданные ранее
         for (i=0;i<model.get().length;i++) {
             var alarm_time = view.get(i).alarm_time;
-            model.edit(i,{'edited':false});            
+            
+            if (model.get(i).edited) model.edit(i,{'edited':false});            
             if (alarm_time.data('timepicker')) alarm_time.timePicker('destroy');
         }
         // говорим модели о том что мы редактируемся либо не редактируемся. isEdited содержит данные на момент вызова, соотв-но если пикер был открыт и нажата кнопка, нам необходимо его закрыть, т.е сделать !isEdited
@@ -111,7 +117,7 @@ Alarm.viewmodel = function(model,view) {
         var index = find(view.get(),obj),
             time = obj.alarm_time.val();
         
-        model.edit(index,{'time':time});   
+        model.edit(index,{'time':time,'played':false});   
     });
     
     // говорим модели импортировать будильники из LocalStorage

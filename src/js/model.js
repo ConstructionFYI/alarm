@@ -94,6 +94,7 @@
             alarmlist[index].edit(index,args);
             that.modelChanged.notifyObservers(alarmlist);
             that.exportLocalstorage(alarmlist);
+            
         }
 
 
@@ -108,14 +109,15 @@
         this.days = args.days || [];
         this.enabled = args.enabled || false;
         this.edited = args.edited || false;
-
+        this.played = args.played || false;
 
         this.edit = function(index,obj) {
             if (typeof(obj) !== 'object') return;
             that.name = obj.name || that.name;
             that.time = obj.time || that.time;
             that.desc = obj.desc || that.desc;
-            that.days = obj.days || that.days;     
+            that.days = obj.days || that.days;  
+
             // Edited or Not
             if (obj.edited === true || obj.edited === 'true') that.edited = true;
             else if (obj.edited === false || obj.edited === 'false') that.edited = false;
@@ -123,6 +125,11 @@
             // Enabled or Disabled
             if (obj.enabled === true || obj.enabled === 'true') that.enabled = true;
             else if (obj.enabled === false || obj.enabled === 'false') that.enabled = false;
+      
+            // Played or not
+            if (obj.played === true || obj.played === 'true') that.played = true;
+            else if (obj.played === false || obj.played === 'false') that.played = false;
+            
             // сложности с реализацией наблюдателя
             modelEditedItemObserver(arguments);
         };

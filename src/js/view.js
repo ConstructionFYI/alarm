@@ -65,7 +65,7 @@ Alarm.view = function(rootElement) {
     };
     
     var animateInterval;
-    this.playAlarm = function(time,desc) {
+    this.playAlarm = function(time,desc,index) {
         var alert = $('#alarmer').length ? $('#alarmer') : $(alarmerTpl),
             atime = alert.find('#time'),
             adesc = alert.find('#desc'),
