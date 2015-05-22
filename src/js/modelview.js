@@ -202,20 +202,22 @@ Alarm.viewmodel = function(model,view) {
     // Время
     $( document ).on('time_changed',function(event,obj){
         var index = find(view.get(),obj),
-            time = obj.alarm_time.val();
+            time = obj.alarm_time.val(),
+            state = model.get(index).enabled;
         model.edit(index,{'time':time,'played':false});
         
-        // show notify on time change
-        var time_a = time.split(':'),
-            days = model.get(index).days,
-            now = new Date(),
-            day_now = [now.getHours(),now.getMinutes(),now.getDay()],
-            nearest = getNearestDay(day_now[2],days),
-            day_next = [time_a[0],time_a[1],nearest],
-            difference = getDiffBetTime(day_now,day_next);
-        
-        view.showNotify(difference);   
-        
+        // show notify on time change (if enabled)
+        if (state) {
+            var time_a = time.split(':'),
+                days = model.get(index).days,
+                now = new Date(),
+                day_now = [now.getHours(),now.getMinutes(),now.getDay()],
+                nearest = getNearestDay(day_now[2],days),
+                day_next = [time_a[0],time_a[1],nearest],
+                difference = getDiffBetTime(day_now,day_next);
+
+            view.showNotify(difference);   
+        }
     });
     
     // говорим модели импортировать будильники из LocalStorage
