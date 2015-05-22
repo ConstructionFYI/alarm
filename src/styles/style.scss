@@ -75,6 +75,7 @@ div#main {
     float: left;
     background: $background;
     display: table;
+    position: relative;
     
     div#tumbler {
         height: $tumblerHeight;
@@ -113,6 +114,21 @@ div#main {
                 left: auto !important;
             }
         }
+    }
+    
+    div#notify {
+        background: rgba(40,40,40,0.7);
+        opacity: 0;
+        position: absolute;
+        border: none;
+        border-radius: 50px;
+        left: calc( 50% - 200px );
+        bottom: 40px;
+        width: 400px;
+        line-height: 30px;
+        text-align: center;
+        color: #efefef;
+        z-index: 100; 
     }
 }
 
@@ -314,12 +330,8 @@ div#side {
                     
                     li {
                         display: none;
-                        margin: 0 3px;
                         background: lighten($backgroundSide,10%);
-                        border-radius: 50%;
                         padding: 4px 3px;
-                        max-height: 14px;
-                        max-width: 14px;
                         overflow: hidden;
                         transition: all 0.5s linear 0;
                     }

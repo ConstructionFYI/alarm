@@ -5,13 +5,13 @@ var template = ['<div id="alarm_item">',
                 '<input type="text" placeholder="description.." id="alarm_desc" />',
                 '<div id="alarm_days">',
                     '<ul>',
-                        '<li id="1">Пн</li>',
-                        '<li id="2">Вт</li>',
-                        '<li id="3">Ср</li>',
-                        '<li id="4">Чт</li>',
-                        '<li id="5">Пт</li>',
-                       ' <li id="6">Сб</li>',
-                        '<li id="7">Вс</li>',
+                        '<li id="1">Mon</li>',
+                        '<li id="2">Tue</li>',
+                        '<li id="3">Wed</li>',
+                        '<li id="4">Thu</li>',
+                        '<li id="5">Fri</li>',
+                        '<li id="6">Sat</li>',
+                        '<li id="7">Sun</li>',
                     '</ul>',
                 '</div>',
                 '<div id="alarm_edit"><span>&#9013;</span></div>',
@@ -88,6 +88,25 @@ Alarm.view = function(rootElement) {
         
         alert.appendTo('body');
         
+    };
+    
+    this.showNotify = function(difference) {
+        var delay = 500,
+            days = difference[2],
+            hours = difference[0],
+            minutes = difference[1],
+            text = locale.notify,
+            stroke = '';
+        
+        // cook text
+        if (days) stroke += days+text.days;
+        if (hours) stroke += hours+text.hours;
+        if (minutes) stroke += minutes+text.minutes;
+        
+        // animate notify
+        $('div#notify span#text').html(text.first+stroke+text.last);
+        $('div#notify').animate({'opacity':1},delay).delay(3000).animate({'opacity':0},delay);
+        
     }
     
 }; 
@@ -130,7 +149,8 @@ Alarm.itemV = function(element,obj) {
 // метод изменяющий значения элементов в будильнике
 // принимает обьект вида {'name':'','time':'00:00','desc':'' ...}, описывать все параметры не обязательно.
 Alarm.itemV.prototype.insertData = function(obj,isNew) {
-    var name = obj.name,
+    var that = this,
+        name = obj.name,
         time = obj.time,
         desc = obj.desc,
         days = obj.days,
@@ -139,11 +159,22 @@ Alarm.itemV.prototype.insertData = function(obj,isNew) {
     
     // реакция на изменение edited (редактируется или нет)
     if (edited !== undefined) {
-        if (edited.toString() === 'true') edited = true;
-        else if (edited.toString() === 'false') edited = false;
-        else edited = this.rootElement.hasClass('edited');
+        if (edited.toString() === 'true')        edited = true;
+        else if (edited.toString() === 'false')  edited = false;
+        else                                     edited = this.rootElement.hasClass('edited');
 
-        this.plate.toggleClass('edited',edited,200);
+        this.plate.toggleClass('edited',edited);
+        // timePicker create on edit..
+        if (edited) {
+            this.alarm_time.timePicker({'theme':'dark','position':'left','float':'bottom','autohide':true,
+                            'afterDone': function(){
+                                $( document ).trigger('time_changed',that);
+                            }}); 
+        }
+        // ..and destroy on close
+        else {
+            if (this.alarm_time.data('timepicker')) this.alarm_time.timePicker('destroy');
+        }
     }
     
     // реакция на изменение enabled (включено или нет)
@@ -175,22 +206,6 @@ Alarm.itemV.prototype.insertData = function(obj,isNew) {
             }
         }
     }
-    /* var time = obj.time || this.alarm_time.val() || '00:00',
-        desc = obj.desc || this.alarm_desc.html() || '',
-        days = obj.days;
-    
-    this.alarm_desc.html(desc);
-    
-    if (days !== undefined && days !== '') {
-        this.alarm_days.find('li').removeClass('on');
-        for (var i = 0;i<days.length;i++) {
-            var day = parseInt(days[i]);
-            if (!isNaN(day)) {
-                this.alarm_days.find('ul').children('#'+day).addClass('on');
-            }
-        }
-    }
-    */
 };
 
 Alarm.itemV.prototype.eventHandle = function(){
@@ -228,6 +243,7 @@ Alarm.itemV.prototype.eventHandle = function(){
     
     // время
     this.alarm_time.off('focusout').on('focusout', function(){
-        $( document ).trigger('time_changed',that);
+        //$( document ).trigger('time_changed',that);
+        // работало коряво, поэтому вырезал. Событие теперь отправляется при событии done таймпикера. События вешаются при инициализации пикера, а тот инициализируется insertData (выше).
     });
 };
