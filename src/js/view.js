@@ -1,8 +1,9 @@
-var template = ['<div id="alarm_item">',
-                '<div id="alarm_remove">x</div>',
+var template = [
+                '<div id="alarm_item">',
+                '<input type="text" placeholder="description.." id="alarm_desc" />',
                 '<input type="text" value="" readonly="readonly" id="alarm_time" />',
                 '<div id="alarm_tumbler"><span></span></div>',
-                '<input type="text" placeholder="description.." id="alarm_desc" />',
+                '<div id="alarm_remove">&#xe802;</div>',                
                 '<div id="alarm_days">',
                     '<ul>',
                         '<li id="1">Mon</li>',
@@ -14,8 +15,9 @@ var template = ['<div id="alarm_item">',
                         '<li id="7">Sun</li>',
                     '</ul>',
                 '</div>',
-                '<div id="alarm_edit"><span>&#9013;</span></div>',
-                '</div>'
+                '<div id="alarm_edit"><span>&#xe80b;</span></div>',
+                '</div>',
+                '<hr />'
            ].join(''),
     alarmerTpl = [
                     '<div id="alarmer">',
@@ -187,9 +189,11 @@ Alarm.itemV.prototype.insertData = function(obj,isNew) {
         else                                     edited = this.rootElement.hasClass('edited');
 
         this.plate.toggleClass('edited',edited);
+        this.alarm_desc.attr('readonly',!edited);
+        
         // timePicker create on edit..
         if (edited) {
-            this.alarm_time.timePicker({'theme':'dark','position':'left','float':'bottom','autohide':true,
+            this.alarm_time.timePicker({'theme':'light','position':'left','float':'bottom','autohide':true,
                             'afterDone': function(){
                                 $( document ).trigger('time_changed',that);
                             }}); 
@@ -207,6 +211,7 @@ Alarm.itemV.prototype.insertData = function(obj,isNew) {
         else                                     enabled = this.alarm_tumbler.children('span').hasClass('enable');
         
         this.alarm_tumbler.children('span').toggleClass('enable',enabled);
+        
     }
     
     // изменение значения time
@@ -261,7 +266,7 @@ Alarm.itemV.prototype.eventHandle = function(){
         clearTimeout(dTimeout);
         dTimeout = setTimeout(function(){
             $( document ).trigger('desc_changed',that);
-        },2000);
+        },1000);
     });
     
     // время
