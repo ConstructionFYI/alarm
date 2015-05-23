@@ -65,7 +65,7 @@ Alarm.view = function(rootElement) {
     };
     
     var animateInterval;
-    this.playAlarm = function(time,desc,index) {
+    this.alarmShow = function(time,desc,index) {
         var alert = $('#alarmer').length ? $('#alarmer') : $(alarmerTpl),
             atime = alert.find('#time'),
             adesc = alert.find('#desc'),
@@ -88,6 +88,28 @@ Alarm.view = function(rootElement) {
         
         alert.appendTo('body');
         
+        // alarmer done button
+        adone.on('click',function(){
+            $( document ).trigger('alarm_done');   
+        });
+
+        // alarmer snooze button
+        asnooze.on('click',function(){
+            $( document ).trigger('alarm_snooze',[time,desc,index]);
+        });
+        
+    };
+    
+    this.alarmDone = function() {
+        var alert = $('#alarmer').length ? $('#alarmer') : undefined,
+            delay = 200;
+        if (alert) {
+            alert.animate({'opacity':0},delay);
+            setTimeout(function(){
+                alert.remove();
+            },delay);
+            
+        }
     };
     
     this.showNotify = function(difference) {
@@ -115,6 +137,7 @@ Alarm.view.prototype.eventHandle = function() {
     var that = this,
         addbutton = $('#alarm_add');
     
+    // add button
     addbutton.on('click',function(){
         $( document ).trigger('add_button');
     });

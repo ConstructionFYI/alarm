@@ -119,8 +119,8 @@ Alarm.viewmodel = function(model,view) {
             desc = obj.desc,
             index = obj.index;
         // вью рисует будильник, модели сообщаем что будильник уже играл
-        view.playAlarm(time,desc,index);
-        model.edit(index,{'played':true});
+        view.alarmShow(time,desc,index);
+        model.edit(index,{'played':true,'enabled':false});
     };
     
     
@@ -130,11 +130,29 @@ Alarm.viewmodel = function(model,view) {
         model.add();
     });
     
+    $( document ).on('alarm_done',function(){
+        // stop play sound
+        alarmer.done();
+        // hide alarmer
+        view.alarmDone();
+    });
+    
+    $( document ).on('alarm_snooze',function(event,time,desc,index){
+        var sleepInterval = 5;
+        time = time.split(':');
+        time[1] = parseInt(time[1]) + sleepInterval;    
+        time = time.join(':');
+        // stop play sound
+        alarmer.snooze(time,desc,index);
+        // hide alarmer
+        view.alarmDone();
+    });
+    
     // Переключатель включить\выключить. 
     $( document ).on('enable_button',function(event,obj){
         var index = find(view.get(),obj),
             state = model.get(index).enabled;
-        model.edit(index,{'enabled':!state});
+        model.edit(index,{'enabled':!state,'played':false});
         
         // show notify if enabled
         if (!state) {

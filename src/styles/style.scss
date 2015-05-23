@@ -300,6 +300,7 @@ div#side {
                         border-radius: 50%;
                         content: " ";
                         transition: all 0.2s linear 0;
+                        box-shadow: 0 0 2px #494949;
                     }
 
                     &.enable {
@@ -334,6 +335,7 @@ div#side {
                         padding: 4px 3px;
                         overflow: hidden;
                         transition: all 0.5s linear 0;
+                        cursor: default;
                     }
 
                     li.on {
@@ -383,6 +385,7 @@ div#side {
             #alarm_time {
                 @include alarm-block-pos(left,calc( 69% - 10px ),calc( 59% - 30px ));
                 outline: none;
+                cursor: pointer;
             }
 
             #alarm_tumbler {
