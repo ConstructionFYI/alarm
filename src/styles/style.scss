@@ -52,8 +52,12 @@ $tumblerHeight: 30px;
 @import 'reset.css';
 body {
     margin: 0;
-    font-family: "Ubuntu","Verdana","Arial",sans-serif;
+    font-family: 'PT Sans', sans-serif;
     color: $backgroundText;
+}
+
+input {
+    font: inherit;
 }
 
 div#container {
