@@ -27,7 +27,13 @@ var template = [
                         '<div id="desc"></div>',
                         '<div id="alarm_done">'+locale.alarmer.done+'</div>',
                     ' </div>',
-    ].join('');
+    ].join(''),
+    confirmTpl = ['<div id="confirm">',
+                        '<div id="text">'+locale.alarm.sure+'</div>',
+                        '<div id="remove">'+locale.alarm.remove+'</div>',
+                        '<div id="cancel">'+locale.alarm.cancel+'</div>',
+                    '</div>'
+                    ].join("");;
 
 Alarm.view = function(rootElement) {
     var that = this,
@@ -152,7 +158,7 @@ Alarm.itemV = function(element,obj) {
     var plate = $(template).css('opacity','0');;
     
     this.rootElement = element;
-    this.plate = plate;
+    this.plate = plate.eq(0);
     this.alarm_remove = plate.find('#alarm_remove');
     this.alarm_time = plate.find('#alarm_time');
     this.alarm_tumbler = plate.find('#alarm_tumbler');
@@ -250,7 +256,24 @@ Alarm.itemV.prototype.eventHandle = function(){
     
     // кнопка удалить
     this.alarm_remove.off('click').on('click',function(){
-        $( document ).trigger('remove_button',that);
+        var confirm = $(confirmTpl).css('opacity',0),
+            remove = confirm.find('#remove'),
+            cancel = confirm.find('#cancel');
+        
+        confirm.appendTo(that.plate).animate({opacity:1},200);
+
+        remove.on('click',function(){
+            $( document ).trigger('remove_button',that);
+        });
+        
+        cancel.on('click',function(){
+            confirm.animate({opacity:0},200);
+            setTimeout(function(){
+                confirm.remove();
+            },200)
+        });
+        
+       // $( document ).trigger('remove_button',that);
     });
     
     // дни недели

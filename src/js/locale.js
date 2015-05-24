@@ -8,7 +8,10 @@ else lng = 'en';
 if (lng == 'en') {
     locale.alarm = {
         'analog':'Analog',
-        'digital':'Digital'
+        'digital':'Digital',
+        'sure':'You Sure?',
+        'remove':'Remove',
+        'cancel':'Cancel'
     }
     
     locale.days = {
@@ -40,7 +43,10 @@ if (lng == 'en') {
 if (lng == 'ru') {
     locale.alarm = {
         'analog':'Аналоговые',
-        'digital':'Цифровые'
+        'digital':'Цифровые',
+        'sure':'Вы уверены?',
+        'remove':'Удалить',
+        'cancel':'Отмена'
     }
     
     locale.days = {
@@ -60,7 +66,7 @@ if (lng == 'ru') {
     }
 
     locale.notify = {
-        'first':'Будильник заиграет через ',
+        'first':'Будильник сработает через ',
         'days':' дн., ',
         'hours':' ч., ',
         'minutes':' мин.',

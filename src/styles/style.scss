@@ -1,10 +1,12 @@
-$background: #EFEFEF;
+$background: #F1F1F1;
 $background-side: #FFF;
 $background-alarmer: #00BCD4;
-
+$background-confirm: #FF7C7C;
+    
 $background-text: #616161;
 $background-side-text: #696969;
-$background-alarmerText: #E0F7FA;
+$background-alarmer-text: #E0F7FA;
+$background-confirm-text: #FBE9E7;
 
 $main-color: #FF7C7C;
 $main-color-inactive: #e5e5e5;
@@ -17,7 +19,7 @@ $analog-arrow-m-color: #696969;
 $analog-arrow-s-color: $main-color;
 $digital-clock-color: #696969;
 
-$border-color-light: #CDCDCD;
+$border-color-light: #EEE;
 
 $shadow-color-light: #CCC;
 $shadow-color-dark: #666;
@@ -31,7 +33,7 @@ $background-alarmer: #00BCD4;
 
 $background-text: #616161;
 $background-side-text: #DEDEDE;
-$background-alarmerText: #E0F7FA;
+$background-alarmer-text: #E0F7FA;
 
 $clock-color: #5F5F5F; //#EFFFF1 - lighty
 $main-color: #2196F3;
@@ -66,6 +68,7 @@ body {
     margin: 0;
     font-family: 'PT Sans', sans-serif;
     color: $background-text;  
+    font-size: 14px;
 }
 
 input {
@@ -101,6 +104,7 @@ div#main {
         p {
             margin-top: 10px;
             text-align: center;
+            font-size: 1.3em;
         }
 
         span#check {
@@ -367,8 +371,8 @@ div#side {
                 font-size: 16px;
                 display: none;
                 position: absolute;
-                top: 6px;
-                right: 6px;
+                top: 3px;
+                right: 4px;
                 padding: 4px;
             }
             
@@ -407,12 +411,57 @@ div#side {
                 font-family: 'fontello';
 
                 &:hover {
-                    background: rgba(#CCC,.2);
+                    //background: rgba(#CCC,.2);
+                    span {
+                        background: rgba(#CCC,.4);
+                        border-radius: 50%;
+                        width: 22px;
+                        line-height: 22px;
+                    }
                 }
                 
                 span {
-                    line-height: 100%;
+                    display: inline-block;
+               
                     vertical-align: middle;
+                }
+            }
+           
+            #confirm {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 100;
+                width: 100%;
+                height: 100%;
+                background: $background-confirm;
+                color: $background-confirm-text;
+                text-align: center;
+                
+                #text {
+                    width: 100%;
+                    height: 80%;
+                    line-height: 120px;
+                    vertical-align: middle;
+                    font-size: 2em;
+                    font-weight: 600;
+                }
+                
+                #remove, #cancel {
+                    height: 20%;
+                    line-height: 30px;
+                    font-size: 1.3em;
+                    cursor: pointer;
+                    display: inline-block;
+                    margin: 0 10px;
+                }
+                
+                #remove {
+                    
+                }
+                
+                #cancel {
+                    
                 }
             }
             
@@ -421,11 +470,13 @@ div#side {
         #alarm_item.edited {
             height:150px;
             background: darken($background-side,3%);
+            border: 1px solid $border-color-light;
             padding-top: 5px;
         
             #alarm_desc {
                 font-size: 1.1em;
                 border-bottom: 1px solid $accent-color;
+                cursor: text;
                 
                 &::-webkit-input-placeholder {color:lighten($background-side-text,30%);}
                 &::-moz-placeholder          {color:lighten($background-side-text,30%);}
@@ -442,6 +493,8 @@ div#side {
             #alarm_remove {
                 cursor: pointer;
                 display: block;
+                color:lighten($background-side-text,20%);
+                
             }
             
             #alarm_time {
@@ -485,170 +538,7 @@ div#side {
             border: 0;
             border-top: 1px solid $border-color-light;
         }
-  /*      #alarm_item {
-            height: 100px;
-            border-bottom: 1px solid lighten($background-side,10%);
-            position: relative;
-            transition: height,background 0.3s ease-out 0;
-
-            #alarm_remove {
-                position: absolute;
-                right: 0;
-                top: 0;
-                margin: 3px 8px;
-                font-size: 10pt;
-                opacity: 0;
-                display: none;
-            }
-
-            #alarm_time {
-                @include alarm-block-pos(left,calc( 69% - 10px ),59%);
-                background: transparent;
-                border: none;
-                font-size: 33pt;
-                padding-left: 10px;
-                color:inherit;
-
-            }
-            #alarm_tumbler {
-                @include alarm-block-pos(right,30%,59%);
-                text-align: right;
-                span {
-                    display: inline-block;
-                    width: 40px;
-                    height: 20px;
-                    border-radius: 10px;
-                    background: lighten($accent-color-inactive,30%);
-                    margin: 15px;
-                    position: relative;
-                    cursor: pointer;
-                    
-
-                    &:after {
-                        display: block;
-                        height: 18px;
-                        width: 18px;
-                        position: absolute;
-                        left: 0;
-                        margin-top: 1px;
-                        margin-left: 2px;
-                        background: $accent-color-inactive;
-                        border-radius: 50%;
-                        content: " ";
-                        transition: all 0.2s linear 0;
-                        box-shadow: 0 0 2px #494949;
-                    }
-
-                    &.enable {
-                        background: desaturate($accent-color,70%);
-                         &:after {
-                             margin-left: 20px;
-                             background: $accent-color;
-                         } 
-                    }
-
-
-                }
-            }
-
-            #alarm_desc {
-                display:none;
-                transition: all 0.3s ease-out 0;
-            }
-
-            #alarm_days {
-                @include alarm-block-pos(left,79%,40%);
-                display: table;
-                ul {
-                    font-size: 8pt;
-                    display: table-cell;
-                    vertical-align: middle;
-                    padding-left: 5px;
-                    
-                    li {
-                        display: none;
-                        background: lighten($background-side,10%);
-                        padding: 4px 3px;
-                        overflow: hidden;
-                        transition: all 0.5s linear 0;
-                        cursor: default;
-                    }
-
-                    li.on {
-                        display: inline-block;
-                    }
-                }
-            }
-
-            #alarm_edit {
-                @include alarm-block-pos(right,20%,40%);
-                display: table;
-
-                span {
-                    display: table-cell;
-                    vertical-align: middle;
-                    text-align: right;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                }
-            }
-        } */
-        /*
-        #alarm_item.edited {
-            height:120px;
-            background: rgba(#bbb,.1);
-
-            #alarm_remove {
-                display: block;
-                opacity: 0.8;
-                cursor:pointer;
-            }
-
-            #alarm_desc {
-                display: block;
-                width: calc( 100% - 40px );
-                margin: 0 10px;
-                padding: 0 10px;
-                height: 30px;
-                border: none;
-                border-bottom: 1px solid $accent-color;  
-                background: transparent;
-                color:inherit;
-                float:left;
-                text-overflow: ellipsis;
-                outline: 0;
-            } 
-
-            #alarm_time {
-                @include alarm-block-pos(left,calc( 69% - 10px ),calc( 59% - 30px ));
-                outline: none;
-                cursor: pointer;
-            }
-
-            #alarm_tumbler {
-                 @include alarm-block-pos(right,30%,calc( 59% - 30px ));
-            }
-
-            #alarm_days {
-                ul {
-                    li {
-                        display: inline-block;
-                        cursor: pointer;
-                    }
-                    li.on {
-                         background: $main-color;
-                    }
-                }
-            }
-
-            #alarm_edit {
-                span {
-                    text-align: left;
-                    transform: rotate(180deg);
-                    padding: 0 10px 10px 10px;
-                }
-            }
-        } */
+ 
     }
     
     #alarm_add {
@@ -660,7 +550,7 @@ div#side {
         background: $accent-color;
         display: table;
         text-align: center;
-        box-shadow: 0 0 10px $shadow-color-default;
+        box-shadow: 1px 1px 5px $shadow-color-default;
         cursor: pointer;
         
         &:after
@@ -685,7 +575,8 @@ div#alarmer {
     right: 0;
     background: $background-alarmer;
     font-size: 12pt;
-    color: $background-alarmerText;
+    color: $background-alarmer-text;
+    z-index: 999;
     
     #extender {
         height: calc( 50% - 210px );    
