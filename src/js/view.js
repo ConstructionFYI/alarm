@@ -86,14 +86,16 @@ Alarm.view = function(rootElement) {
         
         clearInterval(animateInterval);
         atime.html(time).css('position','relative').finish();
-        animateInterval = setInterval(function(){
-            atime.animate({'font-size':'11.5em'},50);
-            atime.delay(70).animate({'font-size':'11.8em'},100);
-            atime.delay(150).animate({'font-size':'11.5em'},50);
-            atime.delay(70).animate({'font-size':'12em'},150);
-            
-        },2000);
         
+        // фэллбэк для тех у кого не поддерживаются css3 transitions
+        if (!$.support.transition) {
+            animateInterval = setInterval(function(){
+                atime.animate({'font-size':'11.5em'},50);
+                atime.delay(50).animate({'font-size':'11.8em'},100);
+                atime.delay(100).animate({'font-size':'11.5em'},50);
+                atime.delay(50).animate({'font-size':'12em'},150);
+            },1000);
+        }
         adesc.html(desc);
         
         alert.appendTo('body');

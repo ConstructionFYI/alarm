@@ -1,4 +1,4 @@
-$background: #F1F1F1;
+$background: #F5F5F5;
 $background-side: #FFF;
 $background-alarmer: #00BCD4;
 $background-confirm: #FF7C7C;
@@ -579,6 +579,8 @@ div#alarmer {
         font-size: 12em;
         text-align: center;
         height: 200px;
+        -webkit-animation: pulse 1s linear infinite;
+                animation: pulse 1s linear infinite;
     }
     
     #desc {
@@ -627,6 +629,21 @@ div#alarmer {
   100% { opacity: 0; }
 }
 
+@-webkit-keyframes pulse {
+  0% { font-size: 12em; }
+  20% { font-size: 11.4em; }
+  40% { font-size: 11.8em; }
+  60% { font-size: 11.4em; }
+  80% { font-size: 12em; }
+}
+
+@keyframes pulse {
+  0% { font-size: 12em; }
+  20% { font-size: 11.4em; }
+  40% { font-size: 11.8em; }
+  60% { font-size: 11.4em; }
+  80% { font-size: 12em; }
+}
 
 ::-webkit-scrollbar{
     width:3px;
