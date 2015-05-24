@@ -21,6 +21,10 @@ var template = [
            ].join(''),
     alarmerTpl = [
                     '<div id="alarmer">',
+                        '<audio id="player" loop=true autoplay=true>',
+                            '<source src="./sounds/argon.mp3" type="audio/mpeg">',
+                            '<source src="./sounds/argon.ogg" type="audio/ogg">',
+                        '</audio>',
                         '<div id="extender"></div>',
                         '<div id="alarm_snooze">'+locale.alarmer.snooze+'</div>',
                         '<div id="time"></div>',
@@ -158,7 +162,7 @@ Alarm.itemV = function(element,obj) {
     var plate = $(template).css('opacity','0');;
     
     this.rootElement = element;
-    this.plate = plate.eq(0);
+    this.plate = plate;
     this.alarm_remove = plate.find('#alarm_remove');
     this.alarm_time = plate.find('#alarm_time');
     this.alarm_tumbler = plate.find('#alarm_tumbler');
@@ -260,7 +264,7 @@ Alarm.itemV.prototype.eventHandle = function(){
             remove = confirm.find('#remove'),
             cancel = confirm.find('#cancel');
         
-        confirm.appendTo(that.plate).animate({opacity:1},200);
+        confirm.appendTo(that.plate.eq(0)).animate({opacity:1},200);
 
         remove.on('click',function(){
             $( document ).trigger('remove_button',that);

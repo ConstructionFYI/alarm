@@ -31,8 +31,7 @@ Alarm.alarmer = function() {
     
     // после нажатия на кнопку завершить
     this.done = function() {
-        //play sound stop
-        console.log('stop sound');
+        
     }
     
     this.snooze = function(time,desc,index) {
@@ -71,7 +70,6 @@ Alarm.alarm_play.prototype.play = function() {
                 clearInterval(interval);
                 // вызываем событие отображения будильника
                 alarmPlayObserver(that);
-                console.log('start sound');
             }   
     },3000);
     intervals.push(interval);

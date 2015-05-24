@@ -402,28 +402,27 @@ div#side {
             
             #alarm_edit {
                 position: absolute;
-                bottom: 0;
+                bottom: 2px;
                 left: 0;
                 text-align: center;
                 width: 100%;
-                height: 22px;
                 cursor: pointer;
                 font-family: 'fontello';
 
                 &:hover {
-                    //background: rgba(#CCC,.2);
+                    
                     span {
                         background: rgba(#CCC,.4);
                         border-radius: 50%;
-                        width: 22px;
-                        line-height: 22px;
                     }
                 }
                 
                 span {
                     display: inline-block;
-               
+                    width: 22px;
+                    line-height: 22px;
                     vertical-align: middle;
+                    //margin-bottom: 4px;
                 }
             }
            
@@ -456,13 +455,6 @@ div#side {
                     margin: 0 10px;
                 }
                 
-                #remove {
-                    
-                }
-                
-                #cancel {
-                    
-                }
             }
             
         }
@@ -548,6 +540,7 @@ div#side {
         height: 45px;
         border-radius: 50%;
         background: $accent-color;
+        color: $accent-color-inactive;
         display: table;
         text-align: center;
         box-shadow: 1px 1px 5px $shadow-color-default;
