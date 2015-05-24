@@ -65,7 +65,7 @@ Alarm.alarm_play.prototype.play = function() {
             now_day = now.getDay(),
             // если дни не указаны, или совпадают
             day_ex = that.days.length === 0 || find(that.days,now_day);
-
+            
         // если день не указан или совпадает и час, минута совпадают
             if (day_ex && that.time[0] == now_hour && that.time[1] == now_minute ) {
                 clearInterval(interval);

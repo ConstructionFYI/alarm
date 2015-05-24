@@ -1,18 +1,18 @@
 var template = [
                 '<div id="alarm_item">',
-                '<input type="text" placeholder="description.." id="alarm_desc" />',
+                '<input type="text" placeholder="'+locale.alarmer.description+'" id="alarm_desc" />',
                 '<input type="text" value="" readonly="readonly" id="alarm_time" />',
                 '<div id="alarm_tumbler"><span></span></div>',
                 '<div id="alarm_remove">&#xe802;</div>',                
                 '<div id="alarm_days">',
                     '<ul>',
-                        '<li id="1">Mon</li>',
-                        '<li id="2">Tue</li>',
-                        '<li id="3">Wed</li>',
-                        '<li id="4">Thu</li>',
-                        '<li id="5">Fri</li>',
-                        '<li id="6">Sat</li>',
-                        '<li id="7">Sun</li>',
+                        '<li id="1">'+locale.days[1]+'</li>',
+                        '<li id="2">'+locale.days[2]+'</li>',
+                        '<li id="3">'+locale.days[3]+'</li>',
+                        '<li id="4">'+locale.days[4]+'</li>',
+                        '<li id="5">'+locale.days[5]+'</li>',
+                        '<li id="6">'+locale.days[6]+'</li>',
+                        '<li id="0">'+locale.days[0]+'</li>',
                     '</ul>',
                 '</div>',
                 '<div id="alarm_edit"><span>&#xe80b;</span></div>',
@@ -22,10 +22,10 @@ var template = [
     alarmerTpl = [
                     '<div id="alarmer">',
                         '<div id="extender"></div>',
-                        '<div id="alarm_snooze"></div>',
+                        '<div id="alarm_snooze">'+locale.alarmer.snooze+'</div>',
                         '<div id="time"></div>',
                         '<div id="desc"></div>',
-                        '<div id="alarm_done"></div>',
+                        '<div id="alarm_done">'+locale.alarmer.done+'</div>',
                     ' </div>',
     ].join('');
 
@@ -85,8 +85,6 @@ Alarm.view = function(rootElement) {
         },2000);
         
         adesc.html(desc);
-        asnooze.html(locale.alarmer.snooze);
-        adone.html(locale.alarmer.done);
         
         alert.appendTo('body');
         

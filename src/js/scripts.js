@@ -15,15 +15,15 @@ var find = function(array,value){
 }
 
 // GET NEAREST DAY FUNCTION. k.o
- // (now_day,days[1,3,5,7]) ret value (e.g 3)
- var getNearestDay = function (now, days, lost) {
+ // (now_day,days[1,3,5,0]) ret value (e.g 3)
+var getNearestDay = function (now, days, lost) {
      
      if (!(days instanceof Array)) return now;
      if (days.length === 0) return lost ? parseInt(now)+1 : parseInt(now);
      
-     // if day lost, select nex day
+     // if day lost, select next day
      if (lost) {
-        var l = 8;
+        var l = 7;
          
         // просматриваем числа в большую сторону
         for (var i=0;i<days.length;i++) {
@@ -31,23 +31,23 @@ var find = function(array,value){
         }
         
         // в меньшую сторону (т.е с начала)
-        if (l == 8) l = Math.min.apply( Math, days );
+        if (l == 7) l = Math.min.apply( Math, days );
          
          now = l;
      }
      
      // if now < days, e.g (4,[3,5,6] return 5)
-     var k = 0;
+     var k = -1;
 
      for (var i = 0; i < days.length; i++) {
          if (k > days[i] && now <= days[i]) k = days[i];
          if (k < days[i] && now <= days[i] && now > k) k = days[i];
      }
 
-     if (k !== 0) return k;
+     if (k !== -1) return k;
 
      // if now > days, e.g (7,[2,3] return 2)
-     k = 7;
+     k = 6;
      for (i = 0; i < days.length; i++) {
          if (k > days[i] && now > days[i]) k = days[i];
      }
@@ -70,9 +70,9 @@ var find = function(array,value){
          
          // days
          if (day1_d < day2_d) diff_d = day2_d - day1_d;
-         else if (day1_d > day2_d) diff_d = 7 - day1_d + day2_d;
-         else if (day1_d == day2_d && day1_h <= day2_h && day1_m <= day2_m) diff_d = 0;
-         else if (day1_d == day2_d && day1_h >= day2_h && day1_m > day2_m) diff_d = 7 - day1_d + day2_d;
+         else if (day1_d == day2_d && day1_h < day2_h) diff_d = 0;
+         else if (day1_d == day2_d && day1_h == day2_h && day1_m <= day2_m) diff_d = 0; 
+         else diff_d = 7 - day1_d + day2_d;
 
          // hours
          diff_h = day2_h - day1_h;

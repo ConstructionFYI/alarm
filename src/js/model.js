@@ -115,9 +115,11 @@
             if (typeof(obj) !== 'object') return;
             that.name = obj.name || that.name;
             that.time = obj.time || that.time;
-            that.desc = obj.desc || that.desc;
             that.days = obj.days || that.days;  
 
+            // Desctiption
+            if (obj.desc !== undefined) that.desc = obj.desc;
+            
             // Edited or Not
             if (obj.edited === true || obj.edited === 'true') that.edited = true;
             else if (obj.edited === false || obj.edited === 'false') that.edited = false;

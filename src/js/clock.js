@@ -1,3 +1,9 @@
+function localeAlarm() {
+    $('span#analog').html(locale.alarm.analog);
+    $('span#digital').html(locale.alarm.digital);
+}
+
+
 function digitalTimeShow() {
     var $digitalSecond = $('span#digital-second');
     var $digitalMinute = $('span#digital-minute');

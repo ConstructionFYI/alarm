@@ -68,7 +68,8 @@
     
     <script>    
         // ONLOAD
-        $(function(){    
+        $(function(){  
+            localeAlarm();
             showClock(getCookie('clockType'));
             
             $('div#tumbler span').on("click",function(){
@@ -79,7 +80,7 @@
                     showClock('digital');
                 }   
             });
-     
+            
             model = new Alarm.model();
             alarmer = new Alarm.alarmer();
             view = new Alarm.view('div#alarm_container');
@@ -95,7 +96,7 @@
 <div id="container">
     <div id="main">
         <div id="tumbler">
-            <p>Analog <span id="check"></span> Digital</p>
+            <p><span id='analog'></span> <span id="check"></span> <span id='digital'></span></p>
         </div>
         <div id="analog-border">
             <div id="clock-face">
