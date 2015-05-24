@@ -5,6 +5,7 @@ var template = [
                 '<div id="alarm_tumbler"><span></span></div>',
                 '<div id="alarm_remove">&#xe802;</div>',                
                 '<div id="alarm_days">',
+                    '<span id="label"></span>',
                     '<ul>',
                         '<li id="1">'+locale.days[1]+'</li>',
                         '<li id="2">'+locale.days[2]+'</li>',
@@ -76,7 +77,7 @@ Alarm.view = function(rootElement) {
         item.insertData(changes);        
     };
     
-    var animateInterval;
+    var animateInterval,timeoutId;
     this.alarmShow = function(time,desc,index) {
         var alert = $('#alarmer').length ? $('#alarmer') : $(alarmerTpl),
             atime = alert.find('#time'),
@@ -102,13 +103,21 @@ Alarm.view = function(rootElement) {
         
         // alarmer done button
         adone.on('click',function(){
+            clearTimeout(timeoutId);
             $( document ).trigger('alarm_done');   
         });
 
         // alarmer snooze button
         asnooze.on('click',function(){
+            clearTimeout(timeoutId);
             $( document ).trigger('alarm_snooze',[time,desc,index]);
         });
+        
+        // если будильник играет дольше 5 минут - снузим
+        clearTimeout(timeoutId);
+        setTimeout(function(){
+            $( document ).trigger('alarm_snooze',[time,desc,index]);
+        },1000*60*5);
         
     };
     
@@ -170,6 +179,7 @@ Alarm.itemV = function(element,obj) {
     this.alarm_tumbler = plate.find('#alarm_tumbler');
     this.alarm_desc = plate.find('#alarm_desc');
     this.alarm_days = plate.find('#alarm_days');
+    this.alarm_days_label = this.alarm_days.find('#label');
     this.alarm_edit = plate.find('#alarm_edit');
     
     // при создании обьекта заполняем поля дефолтными данными
@@ -237,12 +247,30 @@ Alarm.itemV.prototype.insertData = function(obj,isNew) {
     // изменение значения days
     if (days !== undefined && days instanceof Array) {
         this.alarm_days.find('li').removeClass('on');
+        
+        // заполняем текстовое поле
+        if (days.length === 0) {
+            that.alarm_days_label.html(locale.days.onetime);
+            this.alarm_days.addClass('label-only');
+        }
+        else if (days.length === 7) {
+            that.alarm_days_label.html(locale.days.every);
+            this.alarm_days.addClass('label-only');
+        }
+        else {
+            that.alarm_days_label.html('');
+            this.alarm_days.removeClass('label-only');
+        }
+        
+        // помечаем включенные
         for (var i = 0;i<days.length;i++) {
             var day = parseInt(days[i]);
             if (!isNaN(day)) {
                 this.alarm_days.find('ul').children('#'+day).addClass('on');
             }
         }
+
+        
     }
 };
 

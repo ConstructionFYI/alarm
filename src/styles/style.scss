@@ -379,9 +379,14 @@ div#side {
             #alarm_days {
                 clear: both;
                 height: 15%;
+                font-size: 0.9em;
+                padding-left: 5px;
+                
+                #label {
+                    display: none;
+                }
                 
                 ul {
-                    font-size: 0.9em;
                     
                     li {
                         display: none;
@@ -395,9 +400,20 @@ div#side {
                         display: inline-block;
                         
                     }
-                    
+   
                 }
+
                 
+            }
+            
+            #alarm_days.label-only {
+                #label {
+                    display: inline;
+                }   
+                
+                ul {
+                    display: none;
+                }
             }
             
             #alarm_edit {
@@ -495,8 +511,13 @@ div#side {
             
             #alarm_days {
                 
+                font-size: 0.75em;
+                
+                #label {
+                    display: none;
+                }
+                
                 ul {
-                    font-size: 0.75em;
                     
                     li {
                         display: inline-block;
@@ -514,6 +535,13 @@ div#side {
                     li.on {
                         background: $accent-color;
                     }
+                }
+                
+            }
+            #alarm_days.label-only {
+                
+                ul {
+                    display: block;
                 }
             }
             

@@ -15,6 +15,8 @@ if (lng == 'en') {
     }
     
     locale.days = {
+        'every':'Every Day',
+        'onetime':'One time',
         1:'Mon',
         2:'Tue',
         3:'Wed',
@@ -50,6 +52,8 @@ if (lng == 'ru') {
     }
     
     locale.days = {
+        'every':'Каждый день',
+        'onetime':'Один раз',
         1:'Пн',
         2:'Вт',
         3:'Ср',

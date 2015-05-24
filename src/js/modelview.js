@@ -39,6 +39,7 @@ Alarm.viewmodel = function(model,view) {
         // вью рисует будильник, модель выключает будильник если он "одноразовый"
         view.alarmShow(time,desc,index);
         if (model.get(index).days.length === 0) model.edit(index,{'enabled':false});
+        
     };
     
     
@@ -49,7 +50,7 @@ Alarm.viewmodel = function(model,view) {
     });
     
     $( document ).on('alarm_done',function(){
-        // stop play sound
+
         alarmer.done();
         // hide alarmer
         view.alarmDone();
