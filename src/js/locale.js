@@ -37,6 +37,7 @@ if (lng == 'en') {
         'days':' days, ',
         'hours':' hours, ',
         'minutes':' minutes',
+        'now':'3 second',
         'last':' from now',
     }
 }
@@ -74,6 +75,7 @@ if (lng == 'ru') {
         'days':' дн., ',
         'hours':' ч., ',
         'minutes':' мин.',
-        'last':'',
+        'now':' 3 секунды',
+        'last':' ',
     }
 }

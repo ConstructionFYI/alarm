@@ -104,18 +104,18 @@ Alarm.view = function(rootElement) {
         // alarmer done button
         adone.on('click',function(){
             clearTimeout(timeoutId);
+            console.log('доне и сбрасываем '+timeoutId)
             $( document ).trigger('alarm_done');   
         });
 
         // alarmer snooze button
         asnooze.on('click',function(){
-            clearTimeout(timeoutId);
             $( document ).trigger('alarm_snooze',[time,desc,index]);
         });
         
-        // если будильник играет дольше 5 минут - снузим
+        // if played more than 5 minutes - snooze
         clearTimeout(timeoutId);
-        setTimeout(function(){
+        timeoutId = setTimeout(function(){
             $( document ).trigger('alarm_snooze',[time,desc,index]);
         },1000*60*5);
         
@@ -145,7 +145,7 @@ Alarm.view = function(rootElement) {
         if (days) stroke += days+text.days;
         if (hours) stroke += hours+text.hours;
         if (minutes) stroke += minutes+text.minutes;
-        
+        if (!hours && !minutes && !days) stroke = text.now;
         // animate notify
         $('div#notify span#text').html(text.first+stroke+text.last);
         $('div#notify').animate({'opacity':1},delay).delay(3000).animate({'opacity':0},delay);
