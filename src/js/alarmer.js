@@ -21,7 +21,6 @@ Alarm.alarmer = function() {
     // пишем в массив alarms включенные будильники
         for (var i=0;i<alarmlist.length;i++) {
             var this_a = alarmlist[i];
-                //day_ex = find(this_a.days,now_day),
             
             if ( this_a.enabled ) {
                 alarms.push(new Alarm.alarm_play(this_a.time,this_a.desc,i,this_a.days));
@@ -64,9 +63,9 @@ Alarm.alarm_play.prototype.play = function() {
             now_day = now.getDay(),
             // если дни не указаны, или совпадают
             day_ex = that.days.length === 0 || find(that.days,now_day);
-            
+        
         // если день не указан или совпадает и час, минута совпадают
-            if (day_ex && that.time[0] == now_hour && that.time[1] == now_minute ) {
+            if (!isNaN(day_ex) && that.time[0] == now_hour && that.time[1] == now_minute ) {
                 clearInterval(interval);
                 // вызываем событие отображения будильника
                 alarmPlayObserver(that);

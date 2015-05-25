@@ -104,7 +104,6 @@ Alarm.view = function(rootElement) {
         // alarmer done button
         adone.on('click',function(){
             clearTimeout(timeoutId);
-            console.log('доне и сбрасываем '+timeoutId)
             $( document ).trigger('alarm_done');   
         });
 
