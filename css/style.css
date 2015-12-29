@@ -47,7 +47,7 @@ div#main div#tumbler span#check {
     width: 55px;
     height: 30px;
     display: inline-block;
-    background: #e5e5e5;
+    background: #2A0B33;
     border-radius: 25px;
     position: relative;
     vertical-align: middle;
@@ -333,7 +333,7 @@ div#side #alarm_container #alarm_item #confirm {
     z-index: 100;
     width: 100%;
     height: 100%;
-    background: #ff7c7c;
+    background: #2A0B33;
     color: #fbe9e7;
     text-align: center
 }
@@ -356,7 +356,7 @@ div#side #alarm_container #alarm_item #confirm #cancel {
 }
 div#side #alarm_container #alarm_item.edited {
     height: 150px;
-    background: #f7f7f7;
+    background: #2A0B33;
     border: 1px solid #EEE;
     padding-top: 5px
 }
@@ -405,7 +405,7 @@ div#side #alarm_container #alarm_item.edited #alarm_days #label {
 }
 div#side #alarm_container #alarm_item.edited #alarm_days ul li {
     display: inline-block;
-    background: #e6e6e6;
+    background: #2A0B33;
     text-overflow: ellipsis;
     cursor: pointer;
     padding: 1px;
@@ -416,7 +416,7 @@ div#side #alarm_container #alarm_item.edited #alarm_days ul li {
     text-align: center
 }
 div#side #alarm_container #alarm_item.edited #alarm_days ul li.on {
-    background: #8bc34a
+    background: #2A0B33
 }
 div#side #alarm_container #alarm_item.edited #alarm_days.label-only ul {
     display: block
@@ -440,7 +440,7 @@ div#side #alarm_add {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: #8bc34a;
+    background: 2A0B33;
     color: #e5e5e5;
     display: table;
     text-align: center;
@@ -462,7 +462,7 @@ div#alarmer {
     bottom: 0;
     left: 0;
     right: 0;
-    background: #00bcd4;
+    background: 2A0B33;
     font-size: 12pt;
     color: #e0f7fa;
     z-index: 999
@@ -493,7 +493,7 @@ div#alarmer #alarm_done {
 }
 div#alarmer #alarm_snooze:hover,
 div#alarmer #alarm_done:hover {
-    background: rgba(40, 40, 40, .1)
+    background: #2A0B33
 }
 div#alarmer #alarm_snooze {
     font-size: 2em
